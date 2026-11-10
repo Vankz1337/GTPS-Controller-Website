@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101411">
+  <title>GTPS Controller</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <section class="login-screen" id="login-view">
+    <div class="login-panel">
+      <div class="brand-mark">G<span>.</span></div>
+      <p class="eyebrow">SERVER CONTROL</p>
+      <h1>Welcome back.</h1>
+      <p class="muted">Sign in to manage your Growtopia server.</p>
+      <form id="login-form" class="login-form">
+        <label for="login-username">Admin username</label>
+        <input id="login-username" name="username" autocomplete="username" required maxlength="80" placeholder="Your username">
+        <label for="login-password">Password</label>
+        <input id="login-password" name="password" type="password" autocomplete="current-password" required maxlength="200" placeholder="Your password">
+        <p class="form-error" id="login-error" role="alert"></p>
+        <button class="button button-primary button-wide" type="submit">Sign in <span aria-hidden="true">↗</span></button>
+      </form>
+      <div class="login-foot"><span class="status-dot"></span> Private admin access</div>
+    </div>
+    <div class="login-aside">
+      <div class="aside-grid"></div>
+      <div class="aside-copy">
+        <p class="eyebrow">YOUR SERVER, YOUR RULES</p>
+        <h2>Everything in<br>one place.</h2>
+        <p>Keep an eye on the world, take care of players and handle the day-to-day server work without jumping between tools.</p>
+      </div>
+      <span class="aside-version">GTPS CONTROLLER / 1.0</span>
+    </div>
+  </section>
+
+  <div class="app-shell hidden" id="app-view">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="GTPS Controller home"><span class="brand-mark small">G<span>.</span></span><span>GTPS <b>Controller</b></span></a>
+      <div class="side-label">Workspace</div>
+      <nav class="navigation">
+        <button class="nav-link active" data-view="overview"><span class="nav-icon">⌂</span> Overview</button>
+        <button class="nav-link" data-view="players"><span class="nav-icon">♙</span> Players</button>
+        <button class="nav-link" data-view="server"><span class="nav-icon">▤</span> Server</button>
+        <button class="nav-link" data-view="activity"><span class="nav-icon">◷</span> Activity</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="connection-card"><span class="status-dot"></span><div><strong>Panel connected</strong><small>Local server instance</small></div></div>
+        <div class="user-card"><div class="user-avatar">A</div><div class="user-meta"><strong id="user-name">Admin</strong><small>Administrator</small></div><button class="icon-button" id="logout-button" title="Sign out" aria-label="Sign out">↪</button></div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div><p class="eyebrow">GROWTOPIA PRIVATE SERVER</p><h1 id="page-title">Overview</h1></div>
+        <div class="topbar-actions"><span class="updated-label" id="last-updated">Waiting for server data</span><button class="button button-quiet" id="refresh-button">↻ <span>Refresh</span></button></div>
+      </header>
+
+      <section class="page-view" id="view-overview">
+        <div class="welcome-row"><div><h2>Server overview</h2><p class="muted">A quick look at what's happening right now.</p></div><div class="server-pill" id="server-pill"><span class="status-dot"></span><span id="server-status-text">Checking status</span></div></div>
+        <div class="metric-grid">
+          <article class="metric-card"><div class="metric-heading"><span>Players online</span><span class="metric-symbol green">●</span></div><strong class="metric-number" id="online-count">—</strong><small>From online.txt</small></article>
+          <article class="metric-card"><div class="metric-heading"><span>Player accounts</span><span class="metric-symbol">♙</span></div><strong class="metric-number" id="player-count">—</strong><small id="player-size">Player data folder</small></article>
+          <article class="metric-card"><div class="metric-heading"><span>World files</span><span class="metric-symbol">▦</span></div><strong class="metric-number" id="world-count">—</strong><small id="world-size">World data folder</small></article>
+          <article class="metric-card"><div class="metric-heading"><span>Dashboard uptime</span><span class="metric-symbol">◷</span></div><strong class="metric-number" id="uptime">—</strong><small>Since panel started</small></article>
+        </div>
+        <div class="content-grid">
+          <article class="panel-card server-control-card">
+            <div class="panel-heading"><div><p class="eyebrow">SERVER CONTROL</p><h3>Instance controls</h3></div><span class="muted small-text">Actions run on this machine</span></div>
+            <div class="control-status"><div class="server-orb" id="server-orb"><span></span></div><div><strong id="control-status-title">Checking process</strong><p class="muted" id="control-status-note">Reading server process status</p></div></div>
+            <div class="button-row"><button class="button button-primary" data-server-action="start">Start server</button><button class="button button-secondary" data-server-action="stop">Stop</button><button class="button button-secondary" data-server-action="restart">Restart</button></div>
+          </article>
+          <article class="panel-card maintenance-card">
+            <div class="panel-heading"><div><p class="eyebrow">PLAYER ACCESS</p><h3>Maintenance mode</h3></div><span id="maintenance-badge" class="tag tag-off">Disabled</span></div>
+            <p class="muted maintenance-copy">Show a maintenance message to players when they connect.</p>
+            <label for="maintenance-message">Message shown to players</label>
+            <textarea id="maintenance-message" rows="2" maxlength="200" placeholder="The server is under maintenance."></textarea>
+            <div class="maintenance-actions"><span class="small-text muted">A backup is made before saving.</span><div class="button-row"><button class="button button-secondary" id="maintenance-off">Turn off</button><button class="button button-primary" id="maintenance-on">Turn on</button></div></div>
+          </article>
+        </div>
+        <article class="panel-card activity-card">
+          <div class="panel-heading"><div><p class="eyebrow">LATEST CHANGES</p><h3>Recent activity</h3></div><button class="text-button" data-go-view="activity">View all ↗</button></div>
+          <div id="overview-activity" class="activity-list"><div class="empty-state">No activity yet.</div></div>
+        </article>
+      </section>
+
+      <section class="page-view hidden" id="view-players">
+        <div class="section-intro"><div><h2>Player accounts</h2><p class="muted">Look up a GrowID and manage its server-side values.</p></div></div>
+        <article class="panel-card player-search-card">
+          <form id="player-search-form" class="search-form"><div class="search-field"><span>⌕</span><input id="player-search" placeholder="Search GrowID..." autocomplete="off" maxlength="24"></div><button class="button button-primary" type="submit">Search players</button></form>
+          <div id="player-results" class="player-results"><div class="empty-state">Search for a player to get started.</div></div>
+        </article>
+        <article class="panel-card player-detail-card hidden" id="player-detail">
+          <div class="panel-heading"><div><p class="eyebrow">PLAYER DETAILS</p><h3 id="selected-player-name">Player</h3></div><span class="tag tag-on">Account found</span></div>
+          <div class="player-stats" id="player-stats"></div>
+          <form id="player-edit-form" class="edit-form">
+            <div class="field-group"><label for="edit-field">Field</label><select id="edit-field"><option value="gems">Gems</option><option value="wls">World Locks (WL)</option><option value="xp">Experience (XP)</option><option value="level">Level</option><option value="adminLevel">Admin role level</option></select></div>
+            <div class="field-group"><label for="edit-operation">Operation</label><select id="edit-operation"><option value="add">Add amount</option><option value="set">Set exact value</option></select></div>
+            <div class="field-group"><label for="edit-amount">Amount</label><input id="edit-amount" type="number" step="1" min="0" required placeholder="0"></div>
+            <button class="button button-primary edit-submit" type="submit">Apply change</button>
+          </form>
+          <p class="muted small-text">Every change is backed up and recorded in the activity log. Player passwords are not shown here.</p>
+        </article>
+      </section>
+
+      <section class="page-view hidden" id="view-server">
+        <div class="section-intro"><div><h2>Server management</h2><p class="muted">Process controls and maintenance settings.</p></div></div>
+        <article class="panel-card"><div class="panel-heading"><div><p class="eyebrow">PROCESS</p><h3>Server instance</h3></div><span class="server-pill" id="server-page-pill">Unknown</span></div><div class="button-row"><button class="button button-primary" data-server-action="start">Start server</button><button class="button button-secondary" data-server-action="stop">Stop server</button><button class="button button-secondary" data-server-action="restart">Restart server</button></div><p class="muted small-text server-detail-note">The executable and working directory are read from config.json.</p></article>
+        <article class="panel-card"><div class="panel-heading"><div><p class="eyebrow">CONNECTION MESSAGE</p><h3>Maintenance settings</h3></div><span id="maintenance-badge-server" class="tag tag-off">Disabled</span></div><label for="maintenance-message-server">Message shown to players</label><textarea id="maintenance-message-server" rows="3" maxlength="200"></textarea><div class="button-row"><button class="button button-secondary" id="maintenance-off-server">Turn off maintenance</button><button class="button button-primary" id="maintenance-on-server">Turn on maintenance</button></div></article>
+        <article class="panel-card"><div class="panel-heading"><div><p class="eyebrow">SERVER OUTPUT</p><h3>Log preview</h3></div><button class="button button-quiet" id="log-refresh">Reload</button></div><pre class="log-window" id="server-log">No log file configured.</pre></article>
+      </section>
+
+      <section class="page-view hidden" id="view-activity">
+        <div class="section-intro"><div><h2>Activity log</h2><p class="muted">A record of changes made from this panel.</p></div></div>
+        <article class="panel-card"><div id="activity-list" class="activity-list"><div class="empty-state">No activity yet.</div></div></article>
+      </section>
+      <footer class="footer-note">GTPS Controller <span>·</span> Built for your server</footer>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="confirm-backdrop hidden" id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+    <div class="confirm-box"><p class="eyebrow">PLEASE CONFIRM</p><h3 id="confirm-title">Continue?</h3><p class="muted" id="confirm-message"></p><div class="button-row"><button class="button button-secondary" id="confirm-cancel">Cancel</button><button class="button button-danger" id="confirm-accept">Continue</button></div></div>
+  </div>
+</body>
+</html>

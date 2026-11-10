@@ -1,0 +1,16 @@
+{
+  "name": "gtps-controller-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A small web control panel for a Growtopia Private Server.",
+  "main": "server.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "hash-password": "node scripts/hash-password.js"
+  },
+  "license": "MIT"
+}

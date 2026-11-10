@@ -1,0 +1,26 @@
+{
+  "host": "127.0.0.1",
+  "port": 3000,
+  "sessionSecret": "change-this-to-a-long-random-secret-before-running",
+  "secureCookies": false,
+  "admin": {
+    "username": "admin",
+    "passwordHash": "PASTE_SCRYPT_HASH_HERE"
+  },
+  "paths": {
+    "serverExecutable": "./server.exe",
+    "serverWorkingDirectory": ".",
+    "players": "./players",
+    "worlds": "./worlds",
+    "gemDb": "./gemdb",
+    "serverData": "./server_data.php",
+    "onlineFile": "./online.txt",
+    "serverLog": "./server.log",
+    "backups": "./backups",
+    "auditLog": "./data/admin-actions.log"
+  },
+  "server": {
+    "processName": "server.exe",
+    "maintenanceMessage": "Server is under maintenance. Please try again later."
+  }
+}
