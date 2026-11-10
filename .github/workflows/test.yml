@@ -16,5 +16,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Check JavaScript syntax
+        run: |
+          node --check server.js
+          node --check lib/gtps.js
+          node --check public/app.js
+          node --check scripts/hash-password.js
       - name: Run tests
         run: npm test
